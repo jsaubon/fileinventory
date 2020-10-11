@@ -23,11 +23,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('user', 'PassportController@details');
 
     Route::apiResource('user','UserController');
-    Route::apiResource('client','ClientController');
-    Route::apiResource('employee','ClientEmployeeController');
-    Route::apiResource('other_info','OtherInfoController');
-    Route::apiResource('accounting_entry','ClientAccountingEntryController');
-    Route::apiResource('employee_accounting','ClientEmployeeAccountingController');
-    Route::apiResource('employee_deduction','ClientEmployeeDeductionController');
-    Route::apiResource('payroll','ClientPayrollController');
+    Route::apiResource('folder','FolderController');
 });

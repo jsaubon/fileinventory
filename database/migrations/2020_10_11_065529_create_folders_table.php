@@ -19,8 +19,8 @@ class CreateFoldersTable extends Migration
             $table->string('case_no');
             $table->string('case_type')->nullable();
             $table->string('client_name');
-            $table->string('status');
-            $table->longText('notes');
+            $table->string('status')->nullable();
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }
