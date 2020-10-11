@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Layout, Breadcrumb } from "antd";
 import LayoutHeader from "./LayoutHeader";
 import LayoutFooter from "./LayoutFooter";
-import PageFiles from "../pages/private/PageFiles";
+import PageFolders from "../pages/private/PageFolders";
 
 const LayoutContent = () => {
     const { Content } = Layout;
@@ -20,9 +20,9 @@ const LayoutContent = () => {
                     style={{ padding: 24, minHeight: 380 }}
                 >
                     <Switch>
-                        <Route exact path="/files" component={PageFiles} />
+                        <Route exact path="/folders" component={PageFolders} />
                         <Route path="/" exact>
-                            <Redirect to="/files" />
+                            <Redirect to="/folders" />
                         </Route>
                     </Switch>
                 </div>
