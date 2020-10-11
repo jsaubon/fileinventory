@@ -1,15 +1,20 @@
-import { Card, Input, Table } from "antd";
+import { Button, Card, Col, Input, Row, Table } from "antd";
 import Title from "antd/lib/typography/Title";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { fetchData } from "../../../axios";
+import ButtonGroup from "antd/lib/button/button-group";
+import {
+    EditOutlined,
+    DeleteOutlined,
+    PlusSquareOutlined
+} from "@ant-design/icons";
 
 const PageFolders = () => {
     const [folders, setFolders] = useState([]);
     const [searchFor, setSearchFor] = useState("");
     useEffect(() => {
         fetchData("GET", "api/folder?search=" + searchFor).then(res => {
-            console.log(res);
             if (res.success) {
                 setFolders(res.data);
             }
@@ -21,37 +26,36 @@ const PageFolders = () => {
         <div>
             <Title level={3}>Folders</Title>
             <Card>
-                <Input.Search
-                    enterButton={true}
-                    onSearch={e => setSearchFor(e)}
-                    placeholder="Search here"
-                />
+                <Row>
+                    <Col xs={24} md={6}>
+                        <Button
+                            type="primary"
+                            icon={<PlusSquareOutlined />}
+                            block
+                        >
+                            Add New Record
+                        </Button>
+                    </Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col xs={24} md={6}>
+                        <Title level={4}>List</Title>
+                    </Col>
+                    <Col xs={24} md={6}></Col>
+                    <Col xs={24} md={6}></Col>
+                    <Col xs={24} md={6}>
+                        <Input.Search
+                            enterButton={true}
+                            onSearch={e => setSearchFor(e)}
+                            placeholder="Search here"
+                        />
+                    </Col>
+                </Row>
+
                 <div style={{ overflowX: "auto", marginTop: 10 }}>
                     <Table dataSource={folders} pagination={false}>
-                        <Table.Column
-                            title="Tag"
-                            dataIndex="id"
-                            key="id"
-                            // onFilter={(value, record) =>
-                            //     record.status.indexOf(value) === 0
-                            // }
-                            // filters={[
-                            //     {
-                            //         text: "Active",
-                            //         value: "Active"
-                            //     },
-                            //     {
-                            //         text: "Inactive",
-                            //         value: "Inactive"
-                            //     },
-                            //     {
-                            //         text: "Resigned",
-                            //         value: "Resigned"
-                            //     }
-                            // ]}
-                            // sorter={(a, b) => a.id.length - b.id.length}
-                            // sortDirections={["descend", "ascend"]}
-                        />
+                        <Table.Column title="Tag" dataIndex="id" key="id" />
                         <Table.Column
                             title="Case #"
                             dataIndex="case_no"
@@ -97,6 +101,26 @@ const PageFolders = () => {
                             render={(text, record) => {
                                 return moment(record.updated_at).format(
                                     "YYYY-MM-DD hh:mm A"
+                                );
+                            }}
+                        />
+                        <Table.Column
+                            title="Action"
+                            dataIndex="action"
+                            key="action"
+                            render={(text, record) => {
+                                return (
+                                    <ButtonGroup>
+                                        <Button
+                                            type="primary"
+                                            icon={<EditOutlined />}
+                                        ></Button>
+                                        <Button
+                                            type="primary"
+                                            danger
+                                            icon={<DeleteOutlined />}
+                                        ></Button>
+                                    </ButtonGroup>
                                 );
                             }}
                         />
