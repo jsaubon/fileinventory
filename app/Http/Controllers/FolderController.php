@@ -14,22 +14,25 @@ class FolderController extends Controller
      */
     public function index(Request $request)
     {
-        $folders = Folder::orderBy('updated_at','desc')->limit(30);
-        
-        if($request->search) {
-            $columns = ['color','case_no','case_type','client_name','status','notes','updated_at'];
+        $folders = Folder::with(['folder_files','user'])->orderBy('updated_at','desc')->limit(30);
+        if(isset($request->search)) {
+            $columns = ['color','color_no','case_no','case_type','client_name','status','notes','updated_at'];
             foreach($columns as $column)
             {
                 $folders->where($column, 'like', '%'.$request->search.'%');
             }
-        } 
+        }
         $folders = $folders->get();
-        
 
         return response()->json([
             'success' => true,
             'data' => $folders
         ],200);
+            
+        
+         
+        
+
     }
 
     /**
@@ -40,25 +43,53 @@ class FolderController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'color' => 'required',
-            'case_no' => 'required',
-            'client_name' => 'required',
-        ]);
+        if($request->action == 'change_color') {
+            $folder = Folder::where('color',$request->color)->latest()->first();;
+            $number = 1;
+            if($folder) {
+                 $number = $folder->color_no + 1;
+            }
+            return response()->json([
+                'success' => true,
+                'data' => $number
+            ]);
+        } else {
+            $this->validate($request, [
+                'color' => 'required',
+                'color_no' => 'required',
+                'client_name' => 'required',
+            ]);
+    
+            $folder = Folder::create([
+                'color' => $request->color,
+                'color_no' => $request->color_no,
+                'case_no' => $request->case_no,
+                'case_type' => $request->case_type,
+                'client_name' => $request->client_name,
+                'status' => $request->status,
+                'notes' => $request->notes,
+                'user_id' => auth()->user()->id,
+            ]);
 
-        $folder = Folder::create([
-            'color' => $request->color,
-            'case_no' => $request->case_no,
-            'case_type' => $request->case_type,
-            'client_name' => $request->client_name,
-            'status' => $request->status,
-            'notes' => $request->notes,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'data' => $folder
-        ],200);
+            if($request->folder_files) {
+                foreach ($request->folder_files as $key => $file) {
+                    $files = \App\FolderFile::create([
+                        'folder_id' => $folder->id,
+                        'file_name' => $file['file_name'],
+                        'file_size' => $file['file_size'],
+                        'file_path' => $file['file_path'],
+                    ]);
+                }
+            }
+    
+            return response()->json([
+                'success' => true,
+                'data' => $folder,
+                'request' => $request->all(),
+                'files' => $request->folder_files,
+            ],200);
+        }
+        
     }
 
     /**
@@ -103,11 +134,37 @@ class FolderController extends Controller
             ], 400);
         }
 
-        $updated = $folder->fill($request->all())->save();
 
-        if ($updated)
+        $folder->color = $request->color;
+        $folder->color_no = $request->color_no;
+        $folder->case_no = $request->case_no;
+        $folder->case_type = $request->case_type;
+        $folder->client_name = $request->client_name;
+        $folder->status = $request->status;
+        $folder->notes = $request->notes;
+        $folder->user_id = auth()->user()->id;
+        $folder->save();
+        
+        
+        // $updated = $folder->fill($request->all())->save();
+
+        if($request->folder_files) {
+            foreach ($request->folder_files as $key => $file) {
+                if(!isset($file['id'])) {
+                    $files = \App\FolderFile::create([
+                        'folder_id' => $folder->id,
+                        'file_name' => $file['file_name'],
+                        'file_size' => $file['file_size'],
+                        'file_path' => $file['file_path'],
+                    ]);
+                }
+            }
+        }
+
+        if ($folder)
             return response()->json([
-                'success' => true
+                'success' => true,
+                'request' => $request->all()
             ],200);
         else
             return response()->json([
@@ -143,5 +200,38 @@ class FolderController extends Controller
                 'message' => 'Folder could not be deleted'
             ], 500);
         }
+    }
+
+    public function upload(Request $request) {
+        if($request->hasFile('file')){
+            //Storage::delete('/public/avatars/'.$user->avatar);
+            // Get filename with the extension
+            $filenameWithExt = $request->file('file')->getClientOriginalName();
+            //Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $request->file('file')->getClientOriginalExtension();
+
+            $size = $request->file('file')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            // Upload Image
+            $path = $request->file('file')->storeAs('public',$fileNameToStore);
+            $size = $request->file('file')->getSize();
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'file_name' => $filenameWithExt,
+                    'file_size' => $size,
+                    'file_path' => $path,
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $request->hasFile('file')
+        ]);
+        
     }
 }

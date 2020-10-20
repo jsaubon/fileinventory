@@ -9,6 +9,7 @@ const LayoutHeader = () => {
         localStorage.removeItem("token");
         location.reload();
     };
+    const userdata = JSON.parse(localStorage.userdata);
 
     return (
         <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
@@ -20,12 +21,15 @@ const LayoutHeader = () => {
                 defaultOpenKeys={[]}
                 // className="pull-left"
             >
-                <Menu.Item key="/files">
-                    <Link to="/files">Files</Link>
+                <Menu.Item key="/folders">
+                    <Link to="/folders">Folders</Link>
                 </Menu.Item>
-                <Menu.Item key="/users">
-                    <Link to="/users">Users</Link>
-                </Menu.Item>
+                {userdata.role != "Staff" && (
+                    <Menu.Item key="/users">
+                        <Link to="/users">Users</Link>
+                    </Menu.Item>
+                )}
+
                 <Menu.SubMenu
                     title=""
                     className="pull-right "

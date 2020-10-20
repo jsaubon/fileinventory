@@ -25,8 +25,9 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
-        "antd": "^4.4.2",
         "@ant-design/icons": "^4.2.1",
+        "antd": "^4.4.2",
+        "react-color": "^2.18.1",
         "react-router-dom": "^5.2.0"
     }
 }

@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(15);
+        $users = User::all();
 
         return response()->json([
             'success' => true,
@@ -40,7 +40,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'active' => true,
+            'active' => $request->active,
             'role' => $request->role
         ]);
 

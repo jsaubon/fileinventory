@@ -1,5 +1,5 @@
-const mix = require('laravel-mix');
-
+const mix = require("laravel-mix");
+const moment = require("moment");
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,5 +11,17 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix.react("resources/js/app.js", "public/js")
+    .sass("resources/sass/app.scss", "public/css")
+    .webpackConfig({
+        output: {
+            publicPath: "/",
+            chunkFilename: "js/[name].[chunkhash].js?v=" + moment().unix()
+        }
+    });
+// mix.react("public/*.js", "public");
+
+mix.version();
+if (mix.inProduction()) {
+    mix.version();
+}

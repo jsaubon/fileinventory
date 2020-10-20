@@ -24,4 +24,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('user','UserController');
     Route::apiResource('folder','FolderController');
+    Route::post('folder/upload','FolderController@upload');
+    
 });

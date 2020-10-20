@@ -16,11 +16,13 @@ class CreateFoldersTable extends Migration
         Schema::create('folders', function (Blueprint $table) {
             $table->id();
             $table->string('color');
-            $table->string('case_no');
+            $table->string('color_no');
+            $table->string('case_no')->nullable();
             $table->string('case_type')->nullable();
             $table->string('client_name');
             $table->string('status')->nullable();
             $table->longText('notes')->nullable();
+            $table->integer('user_id')->unsigned();;
             $table->timestamps();
         });
     }

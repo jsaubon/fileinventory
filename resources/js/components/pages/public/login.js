@@ -26,6 +26,7 @@ const Login = () => {
                 setLoadingButtonLogin(false);
                 if (res.token) {
                     localStorage.token = res.token;
+                    localStorage.userdata = JSON.stringify(res.data);
                     location.reload();
                 } else {
                 }

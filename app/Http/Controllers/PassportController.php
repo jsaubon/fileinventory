@@ -48,8 +48,13 @@ class PassportController extends Controller
         ];
 
         if (auth()->attempt($credentials)) {
-            $token = auth()->user()->createToken('Commando-Payroll')->accessToken;
-            return response()->json(['token' => $token], 200);
+            if(auth()->user()->active == 1) {
+                $token = auth()->user()->createToken('Commando-Payroll')->accessToken;
+                return response()->json(['token' => $token,'data' => auth()->user()], 200);
+            } else {
+                return response()->json(['error' => 'User is Deactivated please contact the administrator', 'data' => $credentials], 401);    
+            }
+            
         } else {
             return response()->json(['error' => 'Username or Password is Invalid', 'data' => $credentials], 401);
         }
