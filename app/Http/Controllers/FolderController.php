@@ -14,19 +14,20 @@ class FolderController extends Controller
      */
     public function index(Request $request)
     {
-        $folders = Folder::with(['folder_files','user'])->orderBy('updated_at','desc')->limit(30);
+        $folders = Folder::with(['folder_files','user']);
         if(isset($request->search)) {
             $columns = ['color','color_no','case_no','case_type','client_name','status','notes','updated_at'];
             foreach($columns as $column)
             {
-                $folders->where($column, 'like', '%'.$request->search.'%');
+                $folders->orWhere($column, 'like', '%'.$request->search.'%');
             }
         }
-        $folders = $folders->get();
+        $folders = $folders->orderBy('updated_at','desc')->limit(30)->get();
 
         return response()->json([
             'success' => true,
-            'data' => $folders
+            'data' => $folders,
+            'request' => $request->search
         ],200);
             
         
@@ -214,7 +215,7 @@ class FolderController extends Controller
 
             $size = $request->file('file')->getClientOriginalExtension();
             // Filename to store
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            $fileNameToStore = time().'.'.$extension;
             // Upload Image
             $path = $request->file('file')->storeAs('public',$fileNameToStore);
             $size = $request->file('file')->getSize();

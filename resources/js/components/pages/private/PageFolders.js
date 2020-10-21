@@ -57,6 +57,7 @@ const PageFolders = () => {
     const getFolders = () => {
         fetchData("GET", "api/folder?search=" + searchFor).then(res => {
             if (res.success) {
+                console.log(res);
                 setFolders(res.data);
             }
         });
@@ -184,7 +185,7 @@ const PageFolders = () => {
                                     <div
                                         style={{
                                             background: record.color,
-                                            width: 40,
+                                            minWidth: 40,
                                             height: 40,
                                             textAlign: "center",
                                             fontSize: 25,
@@ -229,6 +230,13 @@ const PageFolders = () => {
                             title="Notes"
                             dataIndex="notes"
                             key="notes"
+                            render={(text, record) => {
+                                return (
+                                    <div style={{ whiteSpace: "pre" }}>
+                                        {record.notes}
+                                    </div>
+                                );
+                            }}
                         />
                         <Table.Column
                             title="Last Updated"
