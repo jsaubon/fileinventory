@@ -12,17 +12,17 @@ import Login from "./components/pages/public/login";
 
 const App = () => {
     let isLogged = localStorage.getItem("token");
-    if (window.location.href.indexOf("http:") !== -1) {
-        if (
-            window.location.href.indexOf(".test") === -1 &&
-            window.location.href.indexOf(":8000") === -1
-        ) {
-            window.location.href = window.location.href.replace(
-                "http",
-                "https"
-            );
-        }
-    }
+    // if (window.location.href.indexOf("http:") !== -1) {
+    //     if (
+    //         window.location.href.indexOf(".test") === -1 &&
+    //         window.location.href.indexOf(":8000") === -1
+    //     ) {
+    //         window.location.href = window.location.href.replace(
+    //             "http",
+    //             "https"
+    //         );
+    //     }
+    // }
     return (
         <StateProvider>
             <Router>
