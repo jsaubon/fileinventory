@@ -275,7 +275,8 @@ const PageFolders = () => {
                                                         window.location.origin +
                                                             "/storage/"
                                                     ),
-                                                    "_blank"
+                                                    "_blank",
+                                                    "download=" + file.file_name
                                                 )
                                             }
                                         >
