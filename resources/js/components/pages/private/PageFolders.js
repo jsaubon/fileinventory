@@ -269,15 +269,30 @@ const PageFolders = () => {
                                         <Tag
                                             style={{ cursor: "pointer" }}
                                             onClick={e =>
-                                                window.open(
-                                                    file.file_path.replace(
+                                                // window.open(
+                                                //     file.file_path.replace(
+                                                //         "public",
+                                                //         window.location.origin +
+                                                //             "/storage/"
+                                                //     ),
+                                                //     "_blank",
+                                                //     "download=" + file.file_name
+                                                // )
+                                                {
+                                                    var uri = file.file_path.replace(
                                                         "public",
                                                         window.location.origin +
                                                             "/storage/"
-                                                    ),
-                                                    "_blank",
-                                                    "download=" + file.file_name
-                                                )
+                                                    ),;
+
+                                                    var downloadLink = document.createElement("a");
+                                                    downloadLink.href = uri;
+                                                    downloadLink.download = file.file_name;
+
+                                                    document.body.appendChild(downloadLink);
+                                                    downloadLink.click();
+                                                    document.body.removeChild(downloadLink);
+                                                }
                                             }
                                         >
                                             {file.file_name}
