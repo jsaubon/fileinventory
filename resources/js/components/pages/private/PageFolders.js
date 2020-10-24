@@ -272,7 +272,8 @@ const PageFolders = () => {
                                                 window.open(
                                                     file.file_path.replace(
                                                         "public",
-                                                        window.location.origin
+                                                        window.location.origin +
+                                                            "/storage/"
                                                     ),
                                                     "_blank"
                                                 )
