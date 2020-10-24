@@ -268,17 +268,8 @@ const PageFolders = () => {
                                     files.push(
                                         <Tag
                                             style={{ cursor: "pointer" }}
-                                            onClick={e =>
-                                                // window.open(
-                                                //     file.file_path.replace(
-                                                //         "public",
-                                                //         window.location.origin +
-                                                //             "/storage/"
-                                                //     ),
-                                                //     "_blank",
-                                                //     "download=" + file.file_name
-                                                // )
-                                                {
+                                            onClick={
+                                                e => {
                                                     var uri = file.file_path.replace(
                                                         "public",
                                                         window.location.origin +
@@ -293,6 +284,15 @@ const PageFolders = () => {
                                                     downloadLink.click();
                                                     document.body.removeChild(downloadLink);
                                                 }
+                                                // window.open(
+                                                //     file.file_path.replace(
+                                                //         "public",
+                                                //         window.location.origin +
+                                                //             "/storage/"
+                                                //     ),
+                                                //     "_blank",
+                                                //     "download=" + file.file_name
+                                                // )
                                             }
                                         >
                                             {file.file_name}
