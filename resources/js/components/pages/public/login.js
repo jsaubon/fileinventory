@@ -56,7 +56,8 @@ const Login = () => {
                                 background: "#fff"
                             }}
                         >
-                            <div className="login-logo"></div>
+                           
+                        <h1 style={{fontSize: '50px'}}>Atty. Nelbert T. Poculan <br/>Law Office</h1>
                             <div
                                 style={{
                                     maxWidth: 300,

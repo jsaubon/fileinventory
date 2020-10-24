@@ -13,7 +13,7 @@ const LayoutHeader = () => {
 
     return (
         <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
-            <div className="logo" />
+            <h3 className="logo" style={{background: '#fff', margin: '0'}}>Law Office</h3>
             <Menu
                 theme="light"
                 mode="horizontal"
