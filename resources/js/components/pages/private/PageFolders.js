@@ -77,7 +77,13 @@ const PageFolders = () => {
         });
     };
 
+    useEffect(() => {
+        // console.log(folderData)
+        return () => {};
+    }, [folderData]);
+
     let formRef;
+    let uploadedFiles = [];
 
     const uploadProps = {
         name: "file",
@@ -87,16 +93,20 @@ const PageFolders = () => {
             formData.append("file", file);
             fetchData("POST_FILE", "api/folder/upload", formData).then(res => {
                 onSuccess();
-                setFolderData({
-                    ...folderData,
-                    folder_files: [...folderData.folder_files, res.data]
-                });
+                console.log('new file',res.data);
+                // let _folder_files = [...folderData.folder_files];
+                // _folder_files.push(res.data);
+                uploadedFiles.push(res.data);
+                // setFolderData({
+                //     ...folderData,
+                //     folder_files: _folder_files
+                // });
             });
         },
         onChange(info) {
             const { status } = info.file;
             if (status !== "uploading") {
-                console.log(info.file, info.fileList);
+                // console.log(info.file, info.fileList);
             }
             if (status === "done") {
                 message.success(
@@ -111,10 +121,10 @@ const PageFolders = () => {
     const submitForm = e => {
         let data = { ...e };
         data.color = data.color.hex ? data.color.hex : data.color;
-        data.folder_files = folderData.folder_files;
+        data.folder_files = [...uploadedFiles];
         data.color_no = folderData.color_no;
         data.id = folderData.id ? folderData.id : null;
-        // console.log(data);
+        console.log(data);
         fetchData(
             data.id ? "UPDATE" : "POST",
             `api/folder${data.id ? `/${data.id}` : ""}`,
@@ -262,7 +272,7 @@ const PageFolders = () => {
                             dataIndex="files"
                             key="files"
                             render={(text, record) => {
-                                console.log(record);
+                                // console.log(record);
                                 let files = [];
                                 record.folder_files.forEach(file => {
                                     files.push(

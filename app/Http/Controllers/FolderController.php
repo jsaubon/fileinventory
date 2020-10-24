@@ -215,7 +215,7 @@ class FolderController extends Controller
 
             $size = $request->file('file')->getClientOriginalExtension();
             // Filename to store
-            $fileNameToStore = time().'.'.$extension;
+            $fileNameToStore = time().rand(1,999999999).'.'.$extension;
             // Upload Image
             $path = $request->file('file')->storeAs('public',$fileNameToStore);
             $size = $request->file('file')->getSize();
