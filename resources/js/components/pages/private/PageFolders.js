@@ -274,7 +274,7 @@ const PageFolders = () => {
                                                         "public",
                                                         window.location.origin +
                                                             "/storage/"
-                                                    ),;
+                                                    );
 
                                                     var downloadLink = document.createElement("a");
                                                     downloadLink.href = uri;
